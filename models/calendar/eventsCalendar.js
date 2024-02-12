@@ -10,24 +10,25 @@ const coordinatorSchema = new mongoose.Schema({
 });
 
 const eventSchema = new mongoose.Schema({
-    eventName:{
-        type:String,
+    eventName: {
+        type: String,
+        required: true
+    },
+    startDateTime: {
+        type: Date,
+        required: true
+    },
+    endDateTime: {
+        type: Date,
         required:true
     },
-    startDateTime:{
-        type:Date,
-        required:true
-    },
-    endDateTime:{
-        type:Date
-    },
-    organisingDept:{
-        type:String,
-        required:true
+    organisingDept: {
+        type: String,
+        required: true
     },
     category: {
         type: String,
-        enum: ['academic', 'club', 'sports', 'placement'],
+        enum: ['academic', 'club', 'sports', 'placement','STC/FDP','holiday','conference','fest'],
         required: true
     },
     type: {
@@ -35,16 +36,16 @@ const eventSchema = new mongoose.Schema({
         enum: ['online', 'offline', 'hybrid'],
         required: true
     },
-    venue:{
-        type:String,
+    venue: {
+        type: String,
         required: true
     },
-    meetlink:{
+    meetlink: {
         type: String,
-        match: /^https?:\/\/.+$/, 
+        match: /^https?:\/\/.+$/,
     },
-    description:{
-        type:String,
+    description: {
+        type: String,
         required: true
     },
     studentCoordinator: {
@@ -54,18 +55,42 @@ const eventSchema = new mongoose.Schema({
         },
         coordinator2: coordinatorSchema,
     },
-    facultyCoordinator:{
-        name :{type: String},
-        email:{type: String},
+    facultyCoordinator: {
+        name: { type: String },
+        email: { type: String },
     },
-    socialMediaLinks:{
-        whatsapp:{type: String},
-        instagram:{type: String},
-        twitter:{type: String},
+    socialMediaLinks: {
+        whatsapp: { type: String },
+        instagram: { type: String },
+        twitter: { type: String },
+    },
+    department: {
+        type: String,
+        enum: ['bt', 'ch', 'cy', 'ce', 'cse', 'ee', 'ece', 'hm', 'ipe', 'it', 'ice', 'ma', 'me', 'ph', 'tt', 'cf', 'cee', 'cai']
+    },
+    show: {
+        type: Boolean
+    },
+    sourceOfInfo: {
+        type: String
+    },
+    posterUrl: {
+        type: String
+    },
+    openToAnyone: {
+        type: Boolean,
+        default: false
+    },
+    regReq: {
+        type: Boolean,
+        default: false
+    },
+    onSpotReg: {
+        type: Boolean,
+        default: false
     }
-    
-    });
+});
 
 const Event = mongoose.model('Event', eventSchema);
 
-module.exports = {Event};
+module.exports = Event;
