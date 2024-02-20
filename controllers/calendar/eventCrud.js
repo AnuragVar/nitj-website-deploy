@@ -23,6 +23,7 @@ const saveEvent = (req, res) => {
 
 //new showEvent Function , write url in this format to get the monthly data: http://localhost:8000/api/eventsCalendar/events?year=2024&month=5
 const showEvent = async (req, res) => {
+<<<<<<< HEAD
   // try {
   //   const eventData = await Event.find({}).exec();
   //   console.log(eventData);
@@ -33,10 +34,18 @@ const showEvent = async (req, res) => {
 
   try {
     const { year, month } = req.query;
+=======
+    try {
+        const { year, month } = req.query;
+        
+        const parsedYear = parseInt(year);
+        const parsedMonth = parseInt(month);
+>>>>>>> e69ee1d57855e3e748ad1cd76055f4daba60f608
 
     const parsedYear = parseInt(year);
     const parsedMonth = parseInt(month);
 
+<<<<<<< HEAD
     if (
       isNaN(parsedYear) ||
       isNaN(parsedMonth) ||
@@ -46,6 +55,34 @@ const showEvent = async (req, res) => {
       return res
         .status(400)
         .json({ message: "Invalid year or month parameter" });
+=======
+        const startOfMonth = new Date()
+        startOfMonth.setFullYear(parsedYear)
+        startOfMonth.setMonth(parsedMonth-1)
+        startOfMonth.setDate(1)
+        startOfMonth.setUTCHours(0,0,0,0)
+
+        const endOfMonth = new Date()
+        
+        if(parsedMonth===12){
+            parsedYear=parsedYear+1
+            parsedMonth=0
+        }
+
+        endOfMonth.setFullYear(parsedYear)
+        endOfMonth.setMonth(parsedMonth)
+        endOfMonth.setDate(1)
+        endOfMonth.setUTCHours(0,0,0,0)
+
+        const eventData = await Event.find({
+            startDateTime: { $gte: startOfMonth, $lte: endOfMonth }
+        }).exec();
+
+        res.status(200).send(eventData);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+>>>>>>> e69ee1d57855e3e748ad1cd76055f4daba60f608
     }
 
     const startOfMonth = new Date(parsedYear, parsedMonth - 1, 1);
@@ -62,6 +99,10 @@ const showEvent = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> e69ee1d57855e3e748ad1cd76055f4daba60f608
 const updateEvent = async (req, res) => {
   const id = req.params.id;
   const { fieldToUpdate, updatedValue } = req.body;
