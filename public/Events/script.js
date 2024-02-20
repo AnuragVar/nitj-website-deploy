@@ -1,5 +1,5 @@
 const backendEndpoint = "https://example.com/api/events";
-const maxEventsToShow = 3;
+
 // Function to fetch events from the backend
 // async function fetchEvents() {
 //   try {
@@ -296,9 +296,8 @@ function getTagColor(tagName) {
       return "#B45309";
   }
 }
-const getevents = `http://localhost:8000/api/eventsCalendar/events`;
 
-async function fetchEvents() {
+async function fetchEvents(getevents) {
   try {
     const response = await fetch(getevents);
     const data = await response.json();
@@ -310,38 +309,21 @@ async function fetchEvents() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  const maxEventsToShow = 3;
   const materialIconElements = document.querySelectorAll(".material-arrow");
+  const monthlyViewButtons = document.getElementById("monthlyViewButtons");
+  const currentDate = document.querySelector(".current-date");
+  const daysTag = document.querySelector(".days"),
+    prevNextIcon = document.querySelectorAll(".icons span");
+  const defaultViewRadioButton = document.getElementById("defaultView");
+  const monthViewRadioButton = document.getElementById("monthView");
+  const upcomingEvents = document.getElementById("upcomingEvents");
+  const content1 = document.querySelector(".content-1");
+  const content2 = document.querySelector(".content-2");
+
   materialIconElements.forEach((element) => {
     element.style.fontSize = "40px";
   });
-
-  // const option1Button = document.getElementById("option1Button");
-  // const option2Button = document.getElementById("option2Button");
-  // const contentOption1 = document.getElementById("contentOption1");
-  // const contentOption2 = document.getElementById("contentOption2");
-  const monthlyViewButtons = document.getElementById("monthlyViewButtons");
-  // By default, show content for Option 1
-  // contentOption1.classList.remove("hidden");
-  // contentOption2.classList.add("hidden");
-  // upcomingEvents.classList.remove("hidden");
-  // contentOption2.classList.add("hidden");
-
-  // Event listener for Option 1 button
-  // option1Button.addEventListener("click", function () {
-  //   contentOption1.classList.remove("hidden");
-  //   contentOption2.classList.add("hidden");
-  //   upcomingEvents.classList.remove("hidden");
-  //   monthlyViewButtons.style.justifyContent = "space-between";
-  // });
-
-  // Event listener for Option 2 button
-  // option2Button.addEventListener("click", function () {
-  //   contentOption1.classList.add("hidden");
-  //   contentOption2.classList.remove("hidden");
-  //   upcomingEvents.classList.add("hidden");
-  //   monthlyViewButtons.style.justifyContent = "flex-end";
-  //   monthlyViewButtons.style.justifyContent = "flex-end";
-  // });
 
   function formatDate(date) {
     const year = date.getFullYear();
@@ -349,10 +331,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
-
-  const currentDate = document.querySelector(".current-date");
-  const daysTag = document.querySelector(".days"),
-    prevNextIcon = document.querySelectorAll(".icons span");
 
   let date = new Date(),
     currYear = date.getFullYear(),
@@ -383,12 +361,7 @@ document.addEventListener("DOMContentLoaded", function () {
       lastDayofMonth =
         new Date(currYear, currMonth, lastDateofMonth).getDay() - 1, // getting last day of month
       lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate(); // getting last date of previous month
-    // console.log(
-    //   lastDateofLastMonth,
-    //   lastDateofMonth,
-    //   lastDayofMonth,
-    //   firstDayofMonth
-    // );
+
     let liTag = "";
 
     for (let i = firstDayofMonth; i > 0; i--) {
@@ -398,280 +371,383 @@ document.addEventListener("DOMContentLoaded", function () {
       }</button>`;
     }
 
-    const eventData = await fetchEvents();
-    // const eventData = [
-    //   {
-    //     eventName: "Sample Event 1",
-    //     startDateTime: "2024-02-09T14:00:00Z",
-    //     endDateTime: "2024-02-11T02:00:00Z",
-    //     organisingDept: "Computer Science",
-    //     category: "academic",
-    //     type: "online",
-    //     venue: "Online",
-    //     meetlink: "https://meet.google.com",
-    //     description: "This is a sample event?.",
-    //     studentCoordinator: {
-    //       coordinator1: {
-    //         phoneNumber: "1234567890",
-    //         name: "Coordinator 1",
-    //       },
-    //       coordinator2: {
-    //         phoneNumber: "0987654321",
-    //         name: "Coordinator 2",
-    //       },
-    //     },
-    //     facultyCoordinator: {
-    //       name: "Faculty Coordinator",
-    //       email: "faculty@university.edu",
-    //     },
-    //     socialMediaLinks: {
-    //       whatsapp: "https://wa.me/1234567890",
-    //       instagram: "https://instagram.com/sample",
-    //       twitter: "https://twitter.com/sample",
-    //     },
-    //   },
-    //   {
-    //     eventName: "Sample Event 2",
-    //     startDateTime: "2024-02-08T14:00:00Z",
-    //     endDateTime: "2024-02-10T02:00:00Z",
-    //     organisingDept: "Computer Science",
-    //     category: "academic",
-    //     type: "online",
-    //     venue: "Online",
-    //     meetlink: "https://meet.google.com",
-    //     description: "This is a sample event?.",
-    //     studentCoordinator: {
-    //       coordinator1: {
-    //         phoneNumber: "1234567890",
-    //         name: "Coordinator 1",
-    //       },
-    //       coordinator2: {
-    //         phoneNumber: "0987654321",
-    //         name: "Coordinator 2",
-    //       },
-    //     },
-    //     facultyCoordinator: {
-    //       name: "Faculty Coordinator",
-    //       email: "faculty@university.edu",
-    //     },
-    //     socialMediaLinks: {
-    //       whatsapp: "https://wa.me/1234567890",
-    //       instagram: "https://instagram.com/sample",
-    //       twitter: "https://twitter.com/sample",
-    //     },
-    //   },
-    //   {
-    //     eventName: "Sample Event 3",
-    //     startDateTime: "2024-02-08T14:00:00Z",
-    //     endDateTime: "2024-02-10T02:00:00Z",
-    //     organisingDept: "Computer Science",
-    //     category: "academic",
-    //     type: "online",
-    //     venue: "Online",
-    //     meetlink: "https://meet.google.com",
-    //     description: "This is a sample event?.",
-    //     studentCoordinator: {
-    //       coordinator1: {
-    //         phoneNumber: "1234567890",
-    //         name: "Coordinator 1",
-    //       },
-    //       coordinator2: {
-    //         phoneNumber: "0987654321",
-    //         name: "Coordinator 2",
-    //       },
-    //     },
-    //     facultyCoordinator: {
-    //       name: "Faculty Coordinator",
-    //       email: "faculty@university.edu",
-    //     },
-    //     socialMediaLinks: {
-    //       whatsapp: "https://wa.me/1234567890",
-    //       instagram: "https://instagram.com/sample",
-    //       twitter: "https://twitter.com/sample",
-    //     },
-    //   },
-    //   {
-    //     eventName: "Sample Event 4",
-    //     startDateTime: "2024-02-08T14:00:00Z",
-    //     endDateTime: "2024-02-10T02:00:00Z",
-    //     organisingDept: "Computer Science",
-    //     category: "academic",
-    //     type: "online",
-    //     venue: "Online",
-    //     meetlink: "https://meet.google.com",
-    //     description: "This is a sample event?.",
-    //     studentCoordinator: {
-    //       coordinator1: {
-    //         phoneNumber: "1234567890",
-    //         name: "Coordinator 1",
-    //       },
-    //       coordinator2: {
-    //         phoneNumber: "0987654321",
-    //         name: "Coordinator 2",
-    //       },
-    //     },
-    //     facultyCoordinator: {
-    //       name: "Faculty Coordinator",
-    //       email: "faculty@university.edu",
-    //     },
-    //     socialMediaLinks: {
-    //       whatsapp: "https://wa.me/1234567890",
-    //       instagram: "https://instagram.com/sample",
-    //       twitter: "https://twitter.com/sample",
-    //     },
-    //   },
-    //   {
-    //     eventName: "Sample Event 5",
-    //     startDateTime: "2024-02-08T14:00:00Z",
-    //     endDateTime: "2024-02-10T02:00:00Z",
-    //     organisingDept: "Computer Science",
-    //     category: "academic",
-    //     type: "online",
-    //     venue: "Online",
-    //     meetlink: "https://meet.google.com",
-    //     description: "This is a sample event?.",
-    //     studentCoordinator: {
-    //       coordinator1: {
-    //         phoneNumber: "1234567890",
-    //         name: "Coordinator 1",
-    //       },
-    //       coordinator2: {
-    //         phoneNumber: "0987654321",
-    //         name: "Coordinator 2",
-    //       },
-    //     },
-    //     facultyCoordinator: {
-    //       name: "Faculty Coordinator",
-    //       email: "faculty@university.edu",
-    //     },
-    //     socialMediaLinks: {
-    //       whatsapp: "https://wa.me/1234567890",
-    //       instagram: "https://instagram.com/sample",
-    //       twitter: "https://twitter.com/sample",
-    //     },
-    //   },
-    //   {
-    //     eventName: "Sample Event 5",
-    //     startDateTime: "2024-02-08T14:00:00Z",
-    //     endDateTime: "2024-02-10T02:00:00Z",
-    //     organisingDept: "Computer Science",
-    //     category: "academic",
-    //     type: "online",
-    //     venue: "Online",
-    //     meetlink: "https://meet.google.com",
-    //     description: "This is a sample event?.",
-    //     studentCoordinator: {
-    //       coordinator1: {
-    //         phoneNumber: "1234567890",
-    //         name: "Coordinator 1",
-    //       },
-    //       coordinator2: {
-    //         phoneNumber: "0987654321",
-    //         name: "Coordinator 2",
-    //       },
-    //     },
-    //     facultyCoordinator: {
-    //       name: "Faculty Coordinator",
-    //       email: "faculty@university.edu",
-    //     },
-    //     socialMediaLinks: {
-    //       whatsapp: "https://wa.me/1234567890",
-    //       instagram: "https://instagram.com/sample",
-    //       twitter: "https://twitter.com/sample",
-    //     },
-    //   },
-    //   {
-    //     eventName: "Sample Event 5",
-    //     startDateTime: "2024-02-08T14:00:00Z",
-    //     endDateTime: "2024-02-10T02:00:00Z",
-    //     organisingDept: "Computer Science",
-    //     category: "academic",
-    //     type: "online",
-    //     venue: "Online",
-    //     meetlink: "https://meet.google.com",
-    //     description: "This is a sample event?.",
-    //     studentCoordinator: {
-    //       coordinator1: {
-    //         phoneNumber: "1234567890",
-    //         name: "Coordinator 1",
-    //       },
-    //       coordinator2: {
-    //         phoneNumber: "0987654321",
-    //         name: "Coordinator 2",
-    //       },
-    //     },
-    //     facultyCoordinator: {
-    //       name: "Faculty Coordinator",
-    //       email: "faculty@university.edu",
-    //     },
-    //     socialMediaLinks: {
-    //       whatsapp: "https://wa.me/1234567890",
-    //       instagram: "https://instagram.com/sample",
-    //       twitter: "https://twitter.com/sample",
-    //     },
-    //   },
-    //   {
-    //     eventName: "Sample Event 5",
-    //     startDateTime: "2024-02-08T14:00:00Z",
-    //     endDateTime: "2024-02-10T02:00:00Z",
-    //     organisingDept: "Computer Science",
-    //     category: "academic",
-    //     type: "online",
-    //     venue: "Online",
-    //     meetlink: "https://meet.google.com",
-    //     description: "This is a sample event?.",
-    //     studentCoordinator: {
-    //       coordinator1: {
-    //         phoneNumber: "1234567890",
-    //         name: "Coordinator 1",
-    //       },
-    //       coordinator2: {
-    //         phoneNumber: "0987654321",
-    //         name: "Coordinator 2",
-    //       },
-    //     },
-    //     facultyCoordinator: {
-    //       name: "Faculty Coordinator",
-    //       email: "faculty@university.edu",
-    //     },
-    //     socialMediaLinks: {
-    //       whatsapp: "https://wa.me/1234567890",
-    //       instagram: "https://instagram.com/sample",
-    //       twitter: "https://twitter.com/sample",
-    //     },
-    //   },
-    //   {
-    //     eventName: "Sample Event 5",
-    //     startDateTime: "2024-02-08T14:00:00Z",
-    //     endDateTime: "2024-02-10T02:00:00Z",
-    //     organisingDept: "Computer Science",
-    //     category: "academic",
-    //     type: "online",
-    //     venue: "Online",
-    //     meetlink: "https://meet.google.com",
-    //     description: "This is a sample event?.",
-    //     studentCoordinator: {
-    //       coordinator1: {
-    //         phoneNumber: "1234567890",
-    //         name: "Coordinator 1",
-    //       },
-    //       coordinator2: {
-    //         phoneNumber: "0987654321",
-    //         name: "Coordinator 2",
-    //       },
-    //     },
-    //     facultyCoordinator: {
-    //       name: "Faculty Coordinator",
-    //       email: "faculty@university.edu",
-    //     },
-    //     socialMediaLinks: {
-    //       whatsapp: "https://wa.me/1234567890",
-    //       instagram: "https://instagram.com/sample",
-    //       twitter: "https://twitter.com/sample",
-    //     },
-    //   },
-    // ];
-    // console.log(eventData);
+    // const eventData = await fetchEvents(
+    //   `http://localhost:8000/api/eventsCalendar/events?month=${
+    //     currMonth + 1
+    //   }&year=${currYear}`
+    // );
+    const eventData = [
+      {
+        _id: "event1",
+        eventName: "Annual Science Exhibition",
+        startDateTime: "2024-02-11T22:00:00Z",
+        endDateTime: "2024-02-12T10:00:00Z",
+        organisingDept: "Physics",
+        category: "academic",
+        type: "offline",
+        venue: "Science Building",
+        meetlink: "",
+        description:
+          "A showcase of innovative projects and experiments in various scientific disciplines.",
+        studentCoordinator: {
+          coordinator1: {
+            name: "Sarah Johnson",
+            email: "sarah.johnson@example.com",
+            phone: "123-456-7890",
+          },
+          coordinator2: {
+            name: "Mark Davis",
+            email: "mark.davis@example.com",
+            phone: "987-654-3210",
+          },
+        },
+        facultyCoordinator: {
+          name: "Dr. Rachel Adams",
+          email: "rachel.adams@example.com",
+        },
+        socialMediaLinks: {
+          whatsapp: "",
+          instagram: "https://instagram.example.com/science-exhibition",
+          twitter: "https://twitter.example.com/science-exhibition",
+        },
+        department: "ph",
+        show: true,
+        sourceOfInfo: "College newsletter",
+        posterUrl: "https://source.unsplash.com/random",
+        openToAnyone: true,
+        regReq: false,
+        onSpotReg: true,
+      },
+      {
+        _id: "event2",
+        eventName: "Music Club Concert",
+        startDateTime: "2024-02-11T18:00:00Z",
+        endDateTime: "2024-06-05T22:00:00Z",
+        organisingDept: "Music Club",
+        category: "club",
+        type: "offline",
+        venue: "Auditorium",
+        meetlink: "",
+        description:
+          "An evening of live performances by talented musicians from the college.",
+        studentCoordinator: {
+          coordinator1: {
+            name: "Alexandra White",
+            email: "alexandra.white@example.com",
+            phone: "123-456-7890",
+          },
+          coordinator2: {
+            name: "William Johnson",
+            email: "william.johnson@example.com",
+            phone: "987-654-3210",
+          },
+        },
+        facultyCoordinator: {
+          name: "Prof. Michael Smith",
+          email: "michael.smith@example.com",
+        },
+        socialMediaLinks: {
+          whatsapp: "",
+          instagram: "https://instagram.example.com/music-club",
+          twitter: "https://twitter.example.com/music-club",
+        },
+        department: "",
+        show: true,
+        sourceOfInfo: "Social media",
+        posterUrl: "https://source.unsplash.com/random",
+        openToAnyone: true,
+        regReq: false,
+        onSpotReg: true,
+      },
+      {
+        _id: "event3",
+        eventName: "Annual Hackathon",
+        startDateTime: "2024-02-11T09:00:00Z",
+        endDateTime: "2024-06-11T18:00:00Z",
+        organisingDept: "Computer Science and Engineering",
+        category: "club",
+        type: "hybrid",
+        venue: "Computer Lab",
+        meetlink: "https://meet.example.com/hackathon",
+        description:
+          "A coding competition to develop innovative solutions to real-world problems.",
+        studentCoordinator: {
+          coordinator1: {
+            name: "Daniel Brown",
+            email: "daniel.brown@example.com",
+            phone: "123-456-7890",
+          },
+          coordinator2: {
+            name: "Emma Johnson",
+            email: "emma.johnson@example.com",
+            phone: "987-654-3210",
+          },
+        },
+        facultyCoordinator: {
+          name: "Dr. David Miller",
+          email: "david.miller@example.com",
+        },
+        socialMediaLinks: {
+          whatsapp: "",
+          instagram: "",
+          twitter: "",
+        },
+        department: "cse",
+        show: true,
+        sourceOfInfo: "College notice board",
+        posterUrl: "https://source.unsplash.com/random",
+        openToAnyone: true,
+        regReq: true,
+        onSpotReg: false,
+      },
+      {
+        _id: "event4",
+        eventName: "Career Fair 2024",
+        startDateTime: "2024-02-11T09:00:00Z",
+        endDateTime: "2024-06-05T18:00:00Z",
+        organisingDept: "Training and Placement Cell",
+        category: "placement",
+        type: "offline",
+        venue: "Multipurpose Hall",
+        meetlink: "",
+        description:
+          "An opportunity for students to interact with potential employers and explore career options.",
+        studentCoordinator: {
+          coordinator1: {
+            name: "Olivia Smith",
+            email: "olivia.smith@example.com",
+            phone: "123-456-7890",
+          },
+          coordinator2: {
+            name: "Ethan Johnson",
+            email: "ethan.johnson@example.com",
+            phone: "987-654-3210",
+          },
+        },
+        facultyCoordinator: {
+          name: "Prof. Emily Wilson",
+          email: "emily.wilson@example.com",
+        },
+        socialMediaLinks: {
+          whatsapp: "",
+          instagram: "https://instagram.example.com/career-fair",
+          twitter: "https://twitter.example.com/career-fair",
+        },
+        department: "tt",
+        show: true,
+        sourceOfInfo: "College website",
+        posterUrl: "https://source.unsplash.com/random",
+        openToAnyone: true,
+        regReq: false,
+        onSpotReg: true,
+      },
+      {
+        _id: "event5",
+        eventName: "Literary Festival 2024",
+        startDateTime: "2024-02-11T09:00:00Z",
+        endDateTime: "2024-10-22T18:00:00Z",
+        organisingDept: "English",
+        category: "fest",
+        type: "offline",
+        venue: "Library",
+        meetlink: "",
+        description:
+          "A celebration of literature, featuring discussions, poetry readings, and storytelling sessions.",
+        studentCoordinator: {
+          coordinator1: {
+            name: "Sophia Williams",
+            email: "sophia.williams@example.com",
+            phone: "123-456-7890",
+          },
+          coordinator2: {
+            name: "Jacob Brown",
+            email: "jacob.brown@example.com",
+            phone: "987-654-3210",
+          },
+        },
+        facultyCoordinator: {
+          name: "Dr. Olivia Taylor",
+          email: "olivia.taylor@example.com",
+        },
+        socialMediaLinks: {
+          whatsapp: "",
+          instagram: "https://instagram.example.com/literary-festival",
+          twitter: "https://twitter.example.com/literary-festival",
+        },
+        department: "en",
+        show: true,
+        sourceOfInfo: "College newsletter",
+        posterUrl: "https://source.unsplash.com/random",
+        openToAnyone: true,
+        regReq: false,
+        onSpotReg: true,
+      },
+      {
+        _id: "event4",
+        eventName: "Career Fair 2024",
+        startDateTime: "2024-02-11T09:00:00Z",
+        endDateTime: "2024-06-05T18:00:00Z",
+        organisingDept: "Training and Placement Cell",
+        category: "placement",
+        type: "offline",
+        venue: "Multipurpose Hall",
+        meetlink: "",
+        description:
+          "An opportunity for students to interact with potential employers and explore career options.",
+        studentCoordinator: {
+          coordinator1: {
+            name: "Olivia Smith",
+            email: "olivia.smith@example.com",
+            phone: "123-456-7890",
+          },
+          coordinator2: {
+            name: "Ethan Johnson",
+            email: "ethan.johnson@example.com",
+            phone: "987-654-3210",
+          },
+        },
+        facultyCoordinator: {
+          name: "Prof. Emily Wilson",
+          email: "emily.wilson@example.com",
+        },
+        socialMediaLinks: {
+          whatsapp: "",
+          instagram: "https://instagram.example.com/career-fair",
+          twitter: "https://twitter.example.com/career-fair",
+        },
+        department: "tt",
+        show: true,
+        sourceOfInfo: "College website",
+        posterUrl: "https://source.unsplash.com/random",
+        openToAnyone: true,
+        regReq: false,
+        onSpotReg: true,
+      },
+      {
+        _id: "event5",
+        eventName: "Literary Festival 2024",
+        startDateTime: "2024-02-11T09:00:00Z",
+        endDateTime: "2024-10-22T18:00:00Z",
+        organisingDept: "English",
+        category: "fest",
+        type: "offline",
+        venue: "Library",
+        meetlink: "",
+        description:
+          "A celebration of literature, featuring discussions, poetry readings, and storytelling sessions.",
+        studentCoordinator: {
+          coordinator1: {
+            name: "Sophia Williams",
+            email: "sophia.williams@example.com",
+            phone: "123-456-7890",
+          },
+          coordinator2: {
+            name: "Jacob Brown",
+            email: "jacob.brown@example.com",
+            phone: "987-654-3210",
+          },
+        },
+        facultyCoordinator: {
+          name: "Dr. Olivia Taylor",
+          email: "olivia.taylor@example.com",
+        },
+        socialMediaLinks: {
+          whatsapp: "",
+          instagram: "https://instagram.example.com/literary-festival",
+          twitter: "https://twitter.example.com/literary-festival",
+        },
+        department: "en",
+        show: true,
+        sourceOfInfo: "College newsletter",
+        posterUrl: "https://source.unsplash.com/random",
+        openToAnyone: true,
+        regReq: false,
+        onSpotReg: true,
+      },
+      {
+        _id: "event4",
+        eventName: "Career Fair 2024",
+        startDateTime: "2024-02-11T09:00:00Z",
+        endDateTime: "2024-06-05T18:00:00Z",
+        organisingDept: "Training and Placement Cell",
+        category: "placement",
+        type: "offline",
+        venue: "Multipurpose Hall",
+        meetlink: "",
+        description:
+          "An opportunity for students to interact with potential employers and explore career options.",
+        studentCoordinator: {
+          coordinator1: {
+            name: "Olivia Smith",
+            email: "olivia.smith@example.com",
+            phone: "123-456-7890",
+          },
+          coordinator2: {
+            name: "Ethan Johnson",
+            email: "ethan.johnson@example.com",
+            phone: "987-654-3210",
+          },
+        },
+        facultyCoordinator: {
+          name: "Prof. Emily Wilson",
+          email: "emily.wilson@example.com",
+        },
+        socialMediaLinks: {
+          whatsapp: "",
+          instagram: "https://instagram.example.com/career-fair",
+          twitter: "https://twitter.example.com/career-fair",
+        },
+        department: "tt",
+        show: true,
+        sourceOfInfo: "College website",
+        posterUrl: "https://source.unsplash.com/random",
+        openToAnyone: true,
+        regReq: false,
+        onSpotReg: true,
+      },
+      {
+        _id: "event5",
+        eventName: "Literary Festival 2024",
+        startDateTime: "2024-02-11T09:00:00Z",
+        endDateTime: "2024-10-22T18:00:00Z",
+        organisingDept: "English",
+        category: "fest",
+        type: "offline",
+        venue: "Library",
+        meetlink: "",
+        description:
+          "A celebration of literature, featuring discussions, poetry readings, and storytelling sessions.",
+        studentCoordinator: {
+          coordinator1: {
+            name: "Sophia Williams",
+            email: "sophia.williams@example.com",
+            phone: "123-456-7890",
+          },
+          coordinator2: {
+            name: "Jacob Brown",
+            email: "jacob.brown@example.com",
+            phone: "987-654-3210",
+          },
+        },
+        facultyCoordinator: {
+          name: "Dr. Olivia Taylor",
+          email: "olivia.taylor@example.com",
+        },
+        socialMediaLinks: {
+          whatsapp: "",
+          instagram: "https://instagram.example.com/literary-festival",
+          twitter: "https://twitter.example.com/literary-festival",
+        },
+        department: "en",
+        show: true,
+        sourceOfInfo: "College newsletter",
+        posterUrl: "https://source.unsplash.com/random",
+        openToAnyone: true,
+        regReq: false,
+        onSpotReg: true,
+      },
+    ];
+
     // Create an object to store events for each day
     const eventsByDay = {};
 
@@ -707,208 +783,20 @@ document.addEventListener("DOMContentLoaded", function () {
           ? "bg-amber-700"
           : "";
       liTag += `<button class="relative flex h-20 flex-col bg-white px-3 py-2 text-gray-900 hover:bg-gray-100 focus:z-10 ${isToday}">${i}`;
-
+      console.log(events);
       if (events.length > 0) {
         events.forEach((event, index) => {
           if (index < maxEventsToShow || (index == 3 && events.length == 4)) {
-            console.log(index);
-            liTag += `<div class="text-xs text-gray-500 text-left font-semibold truncate  hover:text-accent" onclick="openModal('${
-              event?._id
-            }')" >${event?.eventName}</div>
-
-          <div id="modal-${
-            event?._id
-          }" class="modal hidden fixed z-50 inset-0 w-full h-full overflow-auto" onclick="closeModal('${
-              event?._id
-            }')" style="  background-color: #000000C8;">
-            <style>
-                .modal-content {
-                    animation: slideRight 0.4s ease-in-out;
-                }
-        
-                @keyframes slideRight {
-                    0% {
-                        transform: translateX(50%);
-                    }
-        
-                    100% {
-                        transform: translateX(0);
-                    }
-                }
-            </style>
-            <div class="modal-content m-auto mt-60 p-5 w-3/5  h-full fixed  left-1/2 transform translate-x-1/2 translate-y-1/2 bg-white bg-opacity-65 backdrop-blur-md rounded-l-lg border border-opacity-40 overflow-scroll" 
-                onclick="event?.stopPropagation()">
-                <!-- Close button -->
-                <span
-                    class="close text-gray-500 float-left text-lg scale-200 font-bold w-5 h-5 pb-1 items-center justify-center flex rounded-full border border-gray-700 hover:text-black focus:text-white focus:outline-none cursor-pointer"
-                    onclick="closeModal('${event?._id}')">&times;</span>
-        
-                <!-- Modal content -->
-                <div class="p-4 flex justify-center" style="min-width:47vw">
-                    <img class="object-cover" src="${
-                      event?.posterUrl
-                    }" alt="Event Image" style="border-radius: 8px; height:300px;width:300px;">
-                </div>
-        
-                <div class="flex flex-col gap-4 p-3 ">
-                    <div class="">
-        
-                        <b>
-                            <h2 style="margin-bottom: 15px; font-size: larger; color:" #000000"; ">${
-                              event?.eventName
-                            }</h2></b>
-                
-               
-                <span class=" tag uppercase text-center text-lg me-2 px-3 py-1 rounded-full opacity-90 font-semibold"
-                                style="background-color:${getTagColor(
-                                  event?.category
-                                )}; margin-top:2.2px; font-size:13px ;   color: #FFFFFFB0;">
-                                ${event?.category}</span>
-        
-                    </div>
-                    <div style="font-size: medium; color: rgba(0, 0, 0, 0.681);">
-                        <div class="flex flex-row space-between justify-between items-baseline">
-        
-                            <h2 class="font-semibold text-lg" style=" color:#1E1E1E;">${
-                              event?.venue
-                            }</h2>
-                            <h3 class=" font-semibold text-accent-orange text-lg"> Organizer : ${
-                              event?.organisingDept
-                            }</h3>
-                        </div>
-        
-                        <br />
-                        
-                        <p>${event?.description}</p>
-                    </div>
-                </div>
-        
-                <div style="margin-top: 20px;"> 
-                    <div class="info flex-row flex p-3" style="gap: 15px;">
-                        ${
-                          event?.meetlink
-                            ? `<button type="button" data-te-ripple-init Button
-                            class="group flex flex-row gap-1 text-accent text-sm font-semibold bg-accent bg-opacity-50 hover:bg-accent hover:text-white hover:text-opacity-70 focus:outline-none focus:ring-4 focus:ring-offset-blue-950 rounded-lg text-center items-center justify-center align-middle px-2   text-nowrap transform transition duration-300 hover:scale-105 shadow-md py-0"
-                            style="border: 2px solid rgb(72, 139, 206);" onclick="event?.stopPropagation(); window.open('${event?.meetlink}', '_blank');">
-                            <span class="material-symbols-outlined">
-                                link
-                            </span>
-                            Link
-                        </button>`
-                            : ""
-                        }
-                        ${
-                          event?.download
-                            ? `<button type="button" data-te-ripple-init Button
-                            class="group flex flex-row gap-1 text-accent text-sm font-semibold bg-accent bg-opacity-50 hover:bg-accent hover:text-white hover:text-opacity-70 focus:outline-none focus:ring-4 focus:ring-offset-blue-950 rounded-lg text-center items-center justify-center align-middle px-2   text-nowrap transform transition duration-300 hover:scale-105 shadow-md py-0"
-                            style="border: 2px solid rgb(72, 139, 206);" onclick="event?.stopPropagation(); window.open('${event?.download}', '_blank');">
-                            <span class="material-symbols-outlined">
-                                download
-                            </span>
-                            Download
-                        </button>`
-                            : ""
-                        }
-                        
-                    </div>
-                    <div class="flex flex-col p-3 gap-3">
-                        ${Object.entries(event)
-                          .map(([key, value]) => {
-                            if (
-                              ![
-                                "_id",
-                                "eventName",
-                                "startDateTime",
-                                "endDateTime",
-                                "organisingDept",
-                                "category",
-                                "venue",
-                                "type",
-                                "meetlink",
-                                "description",
-                                "department",
-                                "posterUrl",
-                              ].includes(key)
-                            ) {
-                              if (typeof value === "object") {
-                                return `
-                                <div class="flex flex-col gap-2">
-                                  <p><b>${key} :</b></p>
-                                  <div class="flex flex-col gap-1">
-                                    ${Object.entries(value)
-                                      .map(([subKey, subValue]) => {
-                                        if (typeof subValue === "object") {
-                                          return `
-                                          <p><b>${subKey} :</b></p>
-                                          <div>
-                                            ${Object.entries(subValue)
-                                              .map(
-                                                ([subSubKey, subSubValue]) => {
-                                                  if (
-                                                    typeof subSubValue ===
-                                                      "string" &&
-                                                    subSubValue.startsWith(
-                                                      "http"
-                                                    )
-                                                  ) {
-                                                    return `
-                                                  <div>
-                                                    <p><b>${subSubKey} :</b> <a href="${subSubValue}" target="_blank">${subSubValue}</a></p>
-                                                  </div>
-                                                `;
-                                                  } else {
-                                                    return `
-                                                  <div>
-                                                    <p><b>${subSubKey} :</b> ${subSubValue}</p>
-                                                  </div>
-                                                `;
-                                                  }
-                                                }
-                                              )
-                                              .join("")}
-                                          </div>
-                                        `;
-                                        } else {
-                                          if (
-                                            typeof subValue === "string" &&
-                                            subValue.startsWith("http")
-                                          ) {
-                                            return `<p><b>${subKey} :</b> <a href="${subValue}" target="_blank">${subValue}</a></p>`;
-                                          } else {
-                                            return `<p><b>${subKey} :</b> ${subValue}</p>`;
-                                          }
-                                        }
-                                      })
-                                      .join("")}
-                                  </div>
-                                </div>
-                              `;
-                              } else {
-                                if (
-                                  typeof value === "string" &&
-                                  value.startsWith("http")
-                                ) {
-                                  return `<p>${key} : <a href="${value}" target="_blank">${value}</a></p>`;
-                                } else {
-                                  return `<p>${key} : ${value}</p>`;
-                                }
-                              }
-                            }
-                          })
-                          .join("")}
-                              
-                        </div>
-                </div>
-            </div>
-        </div>
-        </div>
+            liTag += `<p class="text-xs text-gray-500 text-left font-semibold hover:text-accent overflow-hidden whitespace-nowrap overflow-ellipsis max-w-[35px] md:max-w-[60px] lg:max-w-[90px]" onclick="openModal('${event?._id}')" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" >${event?.eventName}</p>
           `;
           } else if (index === maxEventsToShow) {
             console.log(index, "ii");
             // Display a message when the maximum number of events is reached
-            liTag += `<div class="text-xs text-accent-orange text-left hover:text-accent cursor-pointer font-bold">+ ${
-              events.length - maxEventsToShow
-            } more events</div>`;
+            liTag += `<p class="text-xs text-accent-orange text-left hover:text-accent cursor-pointer font-bold">+ ${(
+              <span class="">events.length - maxEventsToShow</span>
+            )} more <span class="hidden md:flex" >events</span></p>
+            
+            `;
           }
         });
       }
@@ -947,69 +835,29 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  const tabs = document.querySelectorAll("[data-tab-target]");
-  const tabContents = document.querySelectorAll(".tab-content");
+  //button functioning
+  content1.style.display = "block";
+  content2.style.display = "none";
+  upcomingEvents.style.display = "block";
 
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      const targetId = tab.dataset.tabTarget;
-      const targetContent = document.getElementById(targetId);
-
-      // Hide all tab contents
-      tabContents.forEach((content) => {
-        content.style.display = "none";
-      });
-
-      // Show the selected tab content
-      targetContent.style.display = "block";
-
-      // Remove 'active' class from all tabs
-      tabs.forEach((t) => {
-        t.classList.remove("active");
-      });
-
-      // Add 'active' class to the clicked tab
-      tab.classList.add("active");
-    });
+  // Add event listeners to the radio buttons
+  defaultViewRadioButton.addEventListener("change", () => {
+    if (defaultViewRadioButton.checked) {
+      content1.style.display = "block";
+      content2.style.display = "none";
+      upcomingEvents.style.display = "block";
+      monthlyViewButtons.style.justifyContent = "space-between";
+    }
   });
 
-  //buttons code
-  //   const tabs = document.querySelectorAll(".tab_btn");
-  //   const all_content = document.querySelectorAll(".content");
-
-  //   tabs.forEach((tab, index) => {
-  //     tab.addEventListener("click", (e) => {
-  //       tabs.forEach((tab) => {
-  //         tab.classList.remove("active");
-  //       });
-  //       tab.classList.add("active");
-  //     });
-  //   });
+  monthViewRadioButton.addEventListener("change", () => {
+    if (monthViewRadioButton.checked) {
+      content1.style.display = "none";
+      content2.style.display = "block";
+      upcomingEvents.style.display = "none";
+      monthlyViewButtons.style.justifyContent = "flex-end";
+    }
+  });
 });
 
-// function showEventModal(eventId) {
-//   // Assuming you have a modal HTML template as a string
-//   const modalHtml = `<div id="modal-${eventId}" class="modal hidden fixed z-50 inset-0 w-full h-full overflow-auto" onclick="closeModal('${eventId}')" style="  background-color: #000000C8;">
-//       <!-- (Your existing modal HTML) -->
-//   </div>`;
-
-//   // Create a temporary div and set its innerHTML to the modal HTML
-//   const tempDiv = document.createElement("div");
-//   tempDiv.innerHTML = modalHtml;
-
-//   // Append the modal to the body
-//   document.body.appendChild(tempDiv.firstChild);
-
-//   // Show the modal
-//   const modal = document.getElementById(`modal-${eventId}`);
-//   modal.style.display = "block";
-// }
-
-// // Add the closeModal function
-// function closeModal(eventId) {
-//   const modal = document.getElementById(`modal-${eventId}`);
-//   modal.style.display = "none";
-//   // Remove the modal element from the DOM when closed
-//   modal.remove();
-// }
 window.onload = addEventsToHTML;

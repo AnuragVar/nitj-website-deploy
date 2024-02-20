@@ -33,23 +33,21 @@
     />
 
     <style>
-      #defaultView:checked ~ div label.defaultView,#monthView:checked ~ div label.monthView{
+      #defaultView:checked ~ div label.defaultView,
+      #monthView:checked ~ div label.monthView {
         color: hsla(201, 96%, 32%);
       }
-      #defaultView:checked ~ div .slider{
-        left: 2%;;
+      #defaultView:checked ~ div .slider {
+        left: 2%;
       }
-      #monthView:checked ~ div .slider{
-        left: 50%;;
+      #monthView:checked ~ div .slider {
+        left: 50%;
       }
-      label{
-        z-index: 1;
-      }
-      div .slider{
+      div .slider {
         position: absolute;
         height: 32px;
         width: 48%;
-        background-color: white ;
+        background-color: white;
         border-radius: 0.5rem;
         z-index: 0;
         left: 0;
@@ -58,17 +56,6 @@
         /* margin-top: 24px; */
         top: 4.5px;
       }
-
-      /* section .content{
-        display: none;
-      } */
-      #defaultView:checked ~ section .content-1,
-      #monthView:checked ~ section .content-2{
-        display: block;
-      }
-
-
-
     </style>
   </head>
 
@@ -85,102 +72,112 @@
       />
     </div>
 
-    <div class="mx-10 gap-10 flex flex-row bg-white" >
+    <div class="mx-10 gap-10 flex flex-row bg-white">
       <div class="events mx-auto" style="width: 70vw">
         <div
           class="flex flex-col sm:flex-row mt-7 justify-between mb-5"
           id="monthlyViewButtons"
         >
-          <div style="font-size: 32px; color: #4e4e4e; font-weight: 400 " id="upcomingEvents">
+          <div
+            style="font-size: 32px; color: #4e4e4e; font-weight: 400"
+            id="upcomingEvents"
+          >
             <b> Today @nitj </b>
           </div>
           <div class="w-fit pt-6">
-
-            <input type="radio" name="slider" hidden id="defaultView" checked>
-            <input type="radio" name="slider" hidden id="monthView" checked>
-            <div class="relative button-group flex items-center w-fit gap-2 h-5 bg-[#eaedf1] py-5 rounded-lg pr-2" >
-              <label for="defaultView"
-              class = "defaultView flex active cursor-pointer"
-              >
-              <span class="material-symbols-outlined"> more_vert </span>
-              <h2>Default view</h2>
-            </label>
-            
-            <label for="monthView"
-            class = "monthView flex cursor-pointer"
+            <input type="radio" name="slider" id="defaultView" checked hidden />
+            <input type="radio" name="slider" id="monthView" hidden />
+            <div
+              class="relative button-group flex items-center w-fit gap-2 h-5 bg-[#a3a6aa] py-5 rounded-lg pr-2"
             >
-            <span class="material-symbols-outlined"> calendar_month </span>
-            <h2>Month view</h2>
-          </label>
-          <div class="slider h-25 shadow-lg"></div>
+              <label
+                for="defaultView"
+                class="defaultView flex active cursor-pointer z-10"
+              >
+                <span class="material-symbols-outlined"> more_vert </span>
+                <h2>Default view</h2>
+              </label>
+
+              <label for="monthView" class="monthView flex cursor-pointer z-10">
+                <span class="material-symbols-outlined"> calendar_month </span>
+                <h2>Month view</h2>
+              </label>
+              <div class="slider"></div>
+              <!-- absolute h-25 bg-white rounded-lg z-0 left-0 bottom-0 transition-all ease-in-out  shadow-lg -->
+            </div>
+          </div>
         </div>
-      </div>
 
-        </div>
+        <section>
+          <div class="content content-1">
+            <h1>hi</h1>
+          </div>
+          <div class="content content-2">
+            <header
+              class="flex items-center justify-between border-b border-gray-200 px-6 py-4 lg:flex-none"
+            >
+              <h1 class="text-base font-semibold leading-6 text-gray-900">
+                <time class="current-date text-xl">January 2022</time>
+              </h1>
+              <div class="icons">
+                <span
+                  id="prev"
+                  class="material-symbols-outlined material-arrow hover:cursor-pointer hover:bg-gray-200 rounded-full"
+                  >chevron_left</span
+                >
+                <span
+                  id="next"
+                  class="material-symbols-outlined material-arrow hover:cursor-pointer hover:bg-gray-200 rounded-full"
+                  >chevron_right</span
+                >
+              </div>
+            </header>
 
-  <section>
-    <div class=" content content-1">
-     <h1>hi</h1>
-   </div>
-   <div class=" content content-2">
-    <header
-    class="flex items-center justify-between border-b border-gray-200 px-6 py-4 lg:flex-none"
-  >
-    <h1 class="text-base font-semibold leading-6 text-gray-900">
-      <time class="current-date text-xl">January 2022</time>
-    </h1>
-    <div class="icons">
-      <span id="prev" class="material-symbols-outlined material-arrow hover:cursor-pointer hover:bg-gray-200 rounded-full ">chevron_left</span>
-      <span id="next" class="material-symbols-outlined material-arrow hover:cursor-pointer hover:bg-gray-200 rounded-full">chevron_right</span>
-    </div>
-  </header>
-
-  <div
-    class="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col"
-  >
-    <div
-      class="grid grid-cols-7 gap-px border-b border-gray-300  text-center text-sm font-semibold leading-6 text-white  lg:flex-none bg-accent"
-    >
-      <div class="flex justify-center py-2 ">
-        <span>M</span>
-        <span class="hidden sm:block">on</span>
+            <div
+              class="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col"
+            >
+              <div
+                class="grid grid-cols-7 gap-px border-b border-gray-300 text-center text-sm font-semibold leading-6 text-white lg:flex-none bg-accent"
+              >
+                <div class="flex justify-center py-2">
+                  <span>M</span>
+                  <span class="hidden sm:block">on</span>
+                </div>
+                <div class="flex justify-center bg-accent py-2">
+                  <span>T</span>
+                  <span class="hidden sm:block">ue</span>
+                </div>
+                <div class="flex justify-center bg-accent py-2">
+                  <span>W</span>
+                  <span class="hidden sm:block">ed</span>
+                </div>
+                <div class="flex justify-center bg-accent py-2">
+                  <span>T</span>
+                  <span class="hidden sm:block">hu</span>
+                </div>
+                <div class="flex justify-center bg-accent py-2">
+                  <span>F</span>
+                  <span class="hidden sm:block">ri</span>
+                </div>
+                <div class="flex justify-center bg-accent py-2">
+                  <span>S</span>
+                  <span class="hidden sm:block">at</span>
+                </div>
+                <div class="flex justify-center bg-accent py-2">
+                  <span>S</span>
+                  <span class="hidden sm:block">un</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <ul
+                class="days shadow ring-1 ring-black ring-opacity-5 lg:grid lg:grid-cols-7 lg:grid-rows-5 lg:gap-px isolate grid w-full grid-cols-7 grid-rows-5 gap-px bg-gray-200 mb-5"
+                style="grid-template-rows: repeat(5, 100px)"
+              ></ul>
+            </div>
+          </div>
+        </section>
       </div>
-      <div class="flex justify-center bg-accent py-2">
-        <span>T</span>
-        <span class="hidden sm:block">ue</span>
-      </div>
-      <div class="flex justify-center bg-accent py-2">
-        <span>W</span>
-        <span class="hidden sm:block">ed</span>
-      </div>
-      <div class="flex justify-center bg-accent py-2">
-        <span>T</span>
-        <span class="hidden sm:block">hu</span>
-      </div>
-      <div class="flex justify-center bg-accent py-2">
-        <span>F</span>
-        <span class="hidden sm:block">ri</span>
-      </div>
-      <div class="flex justify-center bg-accent py-2">
-        <span>S</span>
-        <span class="hidden sm:block">at</span>
-      </div>
-      <div class="flex justify-center bg-accent py-2">
-        <span>S</span>
-        <span class="hidden sm:block">un</span>
-      </div>
-    </div>
-  </div>
-  <div>
-    <!-- shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col -->
-    <!-- grid grid-cols-7 gap-px border-b border-gray-300 bg-gray-200 text-center text-xs font-semibold leading-6 text-gray-700 lg:flex-none -->
-      <ul
-      class="days shadow ring-1 ring-black ring-opacity-5 lg:grid lg:grid-cols-7 lg:grid-rows-5 lg:gap-px isolate grid w-full grid-cols-7 grid-rows-5 gap-px bg-gray-200 mb-5"
-      style="grid-template-rows: repeat(5, 100px);"
-      ></ul>
-  </div>
-   </div>
-  </section>
     </div>
 
     <script src="../template/footer.js" type="module"></script>
