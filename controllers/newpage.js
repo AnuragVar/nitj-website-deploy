@@ -24,15 +24,9 @@ exports.getNewPage = async (req, res) => {
 exports.getNewPagebyId = async (req, res) => {
   if (req.query.id) {
     newpage
-    .findOne({ _id: req.query.id })
-    .then((data) => {
-      if (data.disable) {
-        res.status(400).send('Error: This page is disabled.')
-      } else {
-        res.status(200).send(data)
-      }
-    })
-    .catch((err) => res.status(400).send('Error: ' + err))
+      .find({ _id: req.query.id })
+      .then((data) => res.status(200).send(data))
+      .catch((err) => res.status(400).send("Error: " + err));
   } else {
     newpage
       .find({ show: true })

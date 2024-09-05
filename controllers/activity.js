@@ -21,7 +21,7 @@ const getByIdActivity=async(req,res)=>{
 
 const getByDeptActivity=async(req,res)=>{
     try {
-        const result=await Activity.find({show:true,department:req.params.dept}).sort('-order');
+        const result=await Activity.find({show:true,department:req.params.dept});
         res.status(200).json(result);
     } catch (error) {
         res.status(400).json("Error: " + error);

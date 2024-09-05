@@ -88,7 +88,7 @@ exports.getInitiativebyType = (req, res) => {
 
     Initiatives
         .find(filter)
-        .sort({ morder: 1 })
+        .sort({ updatedAt: -1 })
         .then((intiative) => res.json(intiative))
         .catch((err) => sendError(res,err));
 };

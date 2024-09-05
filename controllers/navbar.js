@@ -23,7 +23,7 @@ const obj = {
     "Prospective Students",
     "Anti Raging",
     "Join NITJ",
-    "Institute Flyers",
+    "Information Flyers",
   ],
   Research: [
     "Research @NITJ",
@@ -197,7 +197,7 @@ exports.create = async (req, res) => {
           ["Prospective Students", false],
           ["Anti Raging", true],
           ["Join NITJ", false],
-          ["Institute Flyers", true],
+          ["Information Flyers", true],
         ],
         Research: [
           ["Research @NITJ", false],
@@ -213,7 +213,6 @@ exports.create = async (req, res) => {
           ["Health And Wellness", true],
           ["NITJ Festivals", false],
           ["Accomodation", true],
-          ["SAMP", true],
         ],
       });
       await navbar.save();

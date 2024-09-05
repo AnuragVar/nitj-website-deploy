@@ -8,25 +8,12 @@ async function fetchEvents() {
   try {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
-    const month = currentDate.getMonth() + 1;
+    const month = currentDate.getMonth()+1;
 
-    const events = [];
-
-    for (let i = 0; i < 3; i++) {
-      // const currentYear = year + Math.floor((month + i - 1) / 12);
-      // const currentMonth = (month + i) % 12 || 12;
-      
-      const monthOffset = month + i - 1;
-      const currentYear = year + Math.floor(monthOffset / 12);
-      const currentMonth = (monthOffset % 12) + 1;
-
-      const response = await fetch(`${getevents}?year=${currentYear}&month=${currentMonth}`);
-      const data = await response.json();
-      events.push(...data);
-    }
-
-    console.log(events);
-    return events;
+    const response = await fetch(`${getevents}?year=${year}&month=${month}`);
+    const data = await response.json();
+    console.log(data);
+    return data;
   } catch (error) {
     console.error('Error fetching events:', error);
     return [];
@@ -89,12 +76,7 @@ async function fetchEvents() {
 //   const day = String(date.getDate()).padStart(2, "0");
 //   return `${year}-${month}-${day}`;
 // }
-function formatDate(dateString) {
-  const [year, month, day] = dateString.split('T')[0].split('-');
-  const date = new Date(year, month - 1, day);
-  const options = { day: 'numeric', month: 'short' };
-  return date.toLocaleDateString(undefined, options);
-}
+
 function fetchdate(datetime) {
   if (!datetime) {
     return null;
@@ -112,39 +94,8 @@ function fetchdate(datetime) {
 }
 
 function fetchtime(startdatetime, enddatetime) {
-
-// Parse time string to obtain hours and minutes
-
-let [startn, startMillis] = startdatetime.split('T')[1].split('.')[0].split(':').map(Number);
-// Add 5 hours and 30 minutes
-startn += 5;
-startMillis += 30;
-// Handle overflow
-if (startMillis >= 60) {
-    startn += 1;
-    startMillis -= 60;
-}
-// Convert to string
-startn = `${startn.toString().padStart(2, '0')}:${startMillis.toString().padStart(2, '0')}`;
-
-// Parse end time
-let [endn, endMillis] = enddatetime.split('T')[1].split('.')[0].split(':').map(Number);
-
-// Add 5 hours and 30 minutes
-endn += 5;
-endMillis += 30;
-
-// Handle overflow
-if (endMillis >= 60) {
-    endn += 1;
-    endMillis -= 60;
-}
-// Convert to string
-endn = `${endn.toString().padStart(2, '0')}:${endMillis.toString().padStart(2, '0')}`;
-
- 
- let start=startn;
- let end=endn;
+  let start = startdatetime.split('T')[1]; // Extracts the time
+  let end = enddatetime.split('T')[1]; // Extracts the time
   if (!start) {
     return null;
   }
@@ -199,80 +150,41 @@ endn = `${endn.toString().padStart(2, '0')}:${endMillis.toString().padStart(2, '
         (currentDate < endDay || (currentDate === endDay && currentMonth === endMonth))
       ) {
         // formattedTime = `<span class="text-red-600">⦿ LIVE </span> ${startHours12}:${startminutes} ${startPeriod} - ${endHours12}:${endminutes} ${endPeriod} <span class="bg-accent text-white px-1 py-[0.5] rounded text-nowrap whitespace-pre" style="white-space: pre;" > ${endDay} ${endingMonth} </span>`;
-        formattedTime = `${startHours12}:${startminutes} ${startPeriod} - ${endHours12}:${endminutes} ${endPeriod} 
-      
-        `;
+        formattedTime = `${startHours12}:${startminutes} ${startPeriod} - ${endHours12}:${endminutes} ${endPeriod} <span class="bg-accent text-white px-1 py-[0.5] rounded text-nowrap whitespace-pre" style="white-space: pre;" > ${endDay} ${endingMonth} </span>`;
       } else {
-        formattedTime = `${startHours12}:${startminutes} ${startPeriod} - ${endHours12}:${endminutes} ${endPeriod}
-        `;
+        formattedTime = `${startHours12}:${startminutes} ${startPeriod} - ${endHours12}:${endminutes} ${endPeriod} <span class="bg-accent text-white px-1 py-[0.5] rounded text-nowrap whitespace-pre" style="white-space: pre;" > ${endDay} ${endingMonth} </span>`;
       }
     } else {
-      formattedTime = `${startHours12}:${startminutes} ${startPeriod} - ${endHours12}:${endminutes} ${endPeriod} `;
+      formattedTime = `${startHours12}:${startminutes} ${startPeriod} - ${endHours12}:${endminutes} ${endPeriod} <span class="bg-accent text-white px-1 py-[0.5] rounded text-nowrap whitespace-pre" style="white-space: pre;" > ${endDay} ${endingMonth} </span>`;
     }
   } else {
-    formattedTime = `${startHours12}:${startminutes} ${startPeriod} - ${endHours12}:${endminutes} ${endPeriod} `;
+    formattedTime = `${startHours12}:${startminutes} ${startPeriod} - ${endHours12}:${endminutes} ${endPeriod} <span class="bg-accent text-white px-1 py-[0.5] rounded text-nowrap whitespace-pre" style="white-space: pre;" > ${endDay} ${endingMonth} </span>`;
   }
   return formattedTime;
 }
+
 
 
 async function addEventsToHTML() {
   const events = await fetchEvents();
 
   const eventsByDate = {};
-  const multiDayEvents = [];
 
   const filteredEvents = events.filter((event) => {
-    const formattedStartDate = new Date(fetchdate(event.startDateTime));
-    const formattedEndDate = new Date(fetchdate(event.endDateTime));
+    const formattedDate = new Date(fetchdate(event.startDateTime));
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0); // to ignore time and compare only the date
-
-    // Check if the event is a multi-day event
-    if (formattedEndDate > formattedStartDate && event.show === true) {
-      multiDayEvents.push(event);
-    }
-
-    return formattedStartDate.getFullYear() === currentDate.getFullYear() && formattedStartDate >= currentDate && event.show === true;
+    return formattedDate.getFullYear() === currentDate.getFullYear() && formattedDate >= currentDate && event.show === true;
   });
 
-// Existing code...
-filteredEvents.forEach((event) => {
-  const formattedStartDate = new Date(fetchdate(event.startDateTime));
-  const formattedEndDate = new Date(fetchdate(event.endDateTime));
-  const dateKey = formattedStartDate.toISOString().split("T")[0]; // Use ISO string as the key
-  if (!eventsByDate[dateKey]) {
-    eventsByDate[dateKey] = [];
-  }
-  eventsByDate[dateKey].push(event);
-});
-
-// New code...
-const currentDate = new Date();
-const currentDateKey = `${currentDate.getUTCFullYear()}-${String(currentDate.getUTCMonth() + 1).padStart(2, '0')}-${String(currentDate.getUTCDate()).padStart(2, '0')}`;
-
-multiDayEvents.forEach((event) => {
- const formattedStartDate = new Date(fetchdate(event.startDateTime));
-formattedStartDate.setHours(0, 0, 0, 0);
-
-const formattedEndDate = new Date(fetchdate(event.endDateTime));
-formattedEndDate.setHours(0, 0, 0, 0);
-
-const currentDate = new Date();
-currentDate.setHours(0, 0, 0, 0);
-
-// Check if the current date is within the range of the multi-day event
-if (formattedStartDate <= currentDate && formattedEndDate >= currentDate) {
-  if (!eventsByDate[currentDateKey]) {
-    eventsByDate[currentDateKey] = [];
-  }
-  const isEventAlreadyAdded = eventsByDate[currentDateKey].some((e) => e._id === event._id);
-  if (!isEventAlreadyAdded) {
-    eventsByDate[currentDateKey].push(event);
-  }
-}
-});
-// Rest of your code...
+  filteredEvents.forEach((event) => {
+    const formattedDate = new Date(fetchdate(event.startDateTime));
+    const dateKey = formattedDate.toISOString().split("T")[0]; // Use ISO string as the key
+    if (!eventsByDate[dateKey]) {
+      eventsByDate[dateKey] = [];
+    }
+    eventsByDate[dateKey].push(event);
+  });
 
   // Sort events in eventsByDate based on start time
   for (const dateKey in eventsByDate) {
@@ -355,8 +267,6 @@ const camelToFlat=(camel)=>{
   return flat;
 }
 
-
-
 function createEventCard(event) {
 
   return `
@@ -364,7 +274,7 @@ function createEventCard(event) {
       onclick="openModal('${event._id}')">
       <div
           class="card-content bg-white border rounded-xl shadow-sm sm:flex border-slate-500/50 flex sm:flex-row flex-col-reverse justify-between hover:border-slate-900 ">
-          <div class="Not-Poster p-4 flex flex-col justify-between"  style="width:100%;">
+          <div class=" p-4   flex flex-col justify-between">
               <div>
                   <div class="flex sm:flex-row flex-col items-baseline" style="align-items:baseline;">
                       <div class="mr-3">
@@ -383,7 +293,7 @@ ${event.category}
 </span>
   
                   </div>
-                  <h3 class=" font-semibold text-slate-700 text-lg ">
+                  <h3 class=" font-semibold text-slate-700 text-lg">
                       ${event.eventName}
                   </h3>
                   <p class="mt-1 text-gray-400 dark:text-gray-700" style="font-size: 14;">
@@ -410,7 +320,7 @@ ${event.category}
                       </span>
                   </div>
                   <div class=" items-center flex flex-wrap">
-                      <div class="button-group flex-ror flex flex-wrap" style="gap: 15px;">
+                      <div class="button-group flex-ror flex" style="gap: 15px;">
                           ${
                           event.meetlink
                           ? `<button type="button" data-te-ripple-init Button
@@ -418,53 +328,38 @@ ${event.category}
                               style="border: 2px solid rgb(72, 139, 206);"
                               onclick="event.stopPropagation(); window.open('${event.meetlink}', '_blank');">
                               <span class="material-symbols-outlined">
-                              video_camera_front
+                                  link
                               </span>
-                              Join
+                              Link
                           </button>`
                           : ""
                           }
                           ${
-                            event.pdfLink
-                            ? `<button type="button" data-te-ripple-init Button
-                                class="group flex flex-row gap-1 text-accent text-sm font-semibold bg-white bg-opacity-50 hover:bg-accent hover:text-white hover:text-opacity-70 focus:outline-none focus:ring-4 focus:ring-offset-blue-950 rounded-lg text-center items-center justify-center align-middle px-2   text-nowrap transform transition duration-300 hover:scale-105 shadow-md py-0"
-                                style="border: 2px solid rgb(72, 139, 206);"
-                                onclick="event.stopPropagation(); window.open('${event.pdfLink}', '_blank');">
-                                <span class="material-symbols-outlined">
-                                    link
-                                </span>
-                                Link
-                            </button>`
-                            : ""
-                            }
-                            ${
-                              event.regLink
-                              ? `<button type="button" data-te-ripple-init Button
-                                  class="group flex flex-row gap-1 text-accent text-sm font-semibold bg-white bg-opacity-50 hover:bg-accent hover:text-white hover:text-opacity-70 focus:outline-none focus:ring-4 focus:ring-offset-blue-950 rounded-lg text-center items-center justify-center align-middle px-1.5   text-nowrap transform transition duration-300 hover:scale-105 shadow-md py-0"
-                                  style="border: 2px solid rgb(72, 139, 206);"
-                                  onclick="event.stopPropagation(); window.open('${event.regLink}', '_blank');">
-                                  <span class="material-symbols-outlined">
-                                  app_registration
-                                  </span>
-                                  Register
-                              </button>`
-                              : ""
-                              }
-                               
+                          event.download
+                          ? `<button type="button" data-te-ripple-init Button
+                              class="group flex flex-row gap-1 text-accent text-sm font-semibold bg-accent bg-opacity-50 hover:bg-accent hover:text-white hover:text-opacity-70 focus:outline-none focus:ring-4 focus:ring-offset-blue-950 rounded-lg text-center items-center justify-center align-middle px-2   text-nowrap transform transition duration-300 hover:scale-105 shadow-md py-0"
+                              style="border: 2px solid rgb(72, 139, 206);"
+                              onclick="event.stopPropagation(); window.open('${event.download}', '_blank');">
+                              <span class="material-symbols-outlined">
+                                  download
+                              </span>
+                              Download
+                          </button>`
+                          : ""
+                          } 
                           <div>
-                          ${event.multiDayEvent ? `<span class="text-sm text-white px-1 py-1 rounded text-nowrap flex flex-wrap" style="background-color:#9CE2BD9B" > 
+                          ${event.multiDayEvent ? `<span class=" text-sm text-white px-1 py-0.5 rounded text-nowrap inline-flex" style="background-color:#9CE2BD9B" > 
                           <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="m429-336 238-237-51-51-187 186-85-84-51 51 136 135Zm51 240q-79 0-149-30t-122.5-82.5Q156-261 126-331T96-480q0-80 30-149.5t82.5-122Q261-804 331-834t149-30q80 0 149.5 30t122 82.5Q804-699 834-629.5T864-480q0 79-30 149t-82.5 122.5Q699-156 629.5-126T480-96Zm0-72q130 0 221-91t91-221q0-130-91-221t-221-91q-130 0-221 91t-91 221q0 130 91 221t221 91Zm0-312Z" fill="#0E6939"/></svg>
-                          <span class="font-semibold mr-2"style="color:#0E6939;">
-                          
-        Multi Day Event</span> <span class="px-1 font-medium" style="background-color:#37845C; border-radius:4px;"> ${formatDate(event.startDateTime)} - ${formatDate(event.endDateTime)} </span> </span>` : ''}
-        </div>
+                          <span class=" font-semibold"style="color:#0E6939;">
+                          Multi Day Event</span> </span>` : ''}
+                          </div>
   
                       </div>
                   </div>
               </div>
           </div>
-          <div class="Poster relative overflow-hidden md:rounded-se-none p-2 justify-center items-center hidden md:block ">
-              <img class="rounded-xl aspect-square object-center w-72"
+          <div class="relative overflow-hidden md:rounded-se-none p-2 justify-center items-center hidden md:block">
+              <img class="object-scale-down rounded-xl w-48 h-48 group-hover:scale-105 transition-transform duration-500 ease-in-out"
                 src="${event.posterUrl ? event.posterUrl : './assets/logo_nitj.webp'}" alt="Image Description">
           </div>
       </div>
@@ -523,11 +418,10 @@ ${event.category}
 </span>
 </div>
 <div>
-${event.multiDayEvent ? `<span class=" text-sm text-white px-1 py-1 rounded text-nowrap flex flex-wrap  " style="background-color:#9CE2BD9B" > 
+${event.multiDayEvent ? `<span class=" text-sm text-white px-1 py-0.5 rounded text-nowrap inline-flex" style="background-color:#9CE2BD9B" > 
 <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="m429-336 238-237-51-51-187 186-85-84-51 51 136 135Zm51 240q-79 0-149-30t-122.5-82.5Q156-261 126-331T96-480q0-80 30-149.5t82.5-122Q261-804 331-834t149-30q80 0 149.5 30t122 82.5Q804-699 834-629.5T864-480q0 79-30 149t-82.5 122.5Q699-156 629.5-126T480-96Zm0-72q130 0 221-91t91-221q0-130-91-221t-221-91q-130 0-221 91t-91 221q0 130 91 221t221 91Zm0-312Z" fill="#0E6939"/></svg>
-<span class=" font-semibold mr-2"style="color:#0E6939;">
-
-Multi Day Event</span> <span class=" px-1 font-medium" style="background-color:#37845C; border-radius:4px;"> ${formatDate(event.startDateTime)} - ${formatDate(event.endDateTime)} </span> </span>` : ''}
+<span class=" font-semibold"style="color:#0E6939;">
+Multi Day Event</span> </span>` : ''}
 </div>
   </div>
           </div>
@@ -552,25 +446,12 @@ Multi Day Event</span> <span class=" px-1 font-medium" style="background-color:#
   
           <div style="margin-top: 20px;">
           <div class="info flex-row flex p-3" style="gap: 15px;">
-          ${
-            event.meetlink
-            ? `<button type="button" data-te-ripple-init Button
-                class="group flex flex-row gap-1 text-accent text-sm font-semibold bg-white bg-opacity-50 hover:bg-accent hover:text-white hover:text-opacity-70 focus:outline-none focus:ring-4 focus:ring-offset-blue-950 rounded-lg text-center items-center justify-center align-middle px-2   text-nowrap transform transition duration-300 hover:scale-105 shadow-md py-0"
-                style="border: 2px solid rgb(72, 139, 206);"
-                onclick="event.stopPropagation(); window.open('${event.meetlink}', '_blank');">
-                <span class="material-symbols-outlined">
-                video_camera_front
-                </span>
-                Join
-            </button>`
-            : ""
-            }
-            ${
-              event.pdfLink
+              ${
+              event.meetlink
               ? `<button type="button" data-te-ripple-init Button
-                  class="group flex flex-row gap-1 text-accent text-sm font-semibold bg-white bg-opacity-50 hover:bg-accent hover:text-white hover:text-opacity-70 focus:outline-none focus:ring-4 focus:ring-offset-blue-950 rounded-lg text-center items-center justify-center align-middle px-2   text-nowrap transform transition duration-300 hover:scale-105 shadow-md py-0"
+                  class="group flex flex-row gap-1 text-accent text-sm font-semibold bg-white hover:bg-accent hover:text-white hover:text-opacity-70 focus:outline-none focus:ring-4 focus:ring-offset-blue-950 rounded-lg text-center items-center justify-center align-middle px-2   text-nowrap transform transition duration-300 hover:scale-105 shadow-md py-0"
                   style="border: 2px solid rgb(72, 139, 206);"
-                  onclick="event.stopPropagation(); window.open('${event.pdfLink}', '_blank');">
+                  onclick="event.stopPropagation(); window.open('${event.meetlink}', '_blank');">
                   <span class="material-symbols-outlined">
                       link
                   </span>
@@ -579,18 +460,19 @@ Multi Day Event</span> <span class=" px-1 font-medium" style="background-color:#
               : ""
               }
               ${
-                event.regLink
-                ? `<button type="button" data-te-ripple-init Button
-                    class="group flex flex-row gap-1 text-accent text-sm font-semibold bg-white bg-opacity-50 hover:bg-accent hover:text-white hover:text-opacity-70 focus:outline-none focus:ring-4 focus:ring-offset-blue-950 rounded-lg text-center items-center justify-center align-middle px-2   text-nowrap transform transition duration-300 hover:scale-105 shadow-md py-0"
-                    style="border: 2px solid rgb(72, 139, 206);"
-                    onclick="event.stopPropagation(); window.open('${event.regLink}', '_blank');">
-                    <span class="material-symbols-outlined">
-                    app_registration
-                    </span>
-                    Register
-                </button>`
-                : ""
-                }
+              event.download
+              ? `<button type="button" data-te-ripple-init Button
+                  class="group flex flex-row gap-1 text-accent text-sm font-semibold bg-accent bg-opacity-50 hover:bg-accent hover:text-white hover:text-opacity-70 focus:outline-none focus:ring-4 focus:ring-offset-blue-950 rounded-lg text-center items-center justify-center align-middle px-2   text-nowrap transform transition duration-300 hover:scale-105 shadow-md py-0"
+                  style="border: 2px solid rgb(72, 139, 206);"
+                  onclick="event.stopPropagation(); window.open('${event.download}', '_blank');">
+                  <span class="material-symbols-outlined">
+                      download
+                  </span>
+                  Download
+              </button>`
+              : ""
+              }
+  
           </div>
           <div class="flex flex-col p-3 gap-3">
 
@@ -613,17 +495,10 @@ Multi Day Event</span> <span class=" px-1 font-medium" style="background-color:#
                         "posterUrl",
                         "show",
                         "multiDayEvent",
-                        "createdAt",
-                        "updatedAt"
                     ].includes(key) &&
                     ((typeof value !== "boolean" && value && value.toString().trim() !== "" && !isEmptyObject(value)) ||
                     (typeof value === "boolean" && value))
                 ) {
-                  if (key === "createdAt" || key === "updatedAt") {
-                    // Parse the value as a date, format it to a locale string
-                    const date = new Date(value);
-                    value = date.toLocaleDateString();
-                  }
                     if (typeof value === "object") {
                         const subEntries = Object.entries(value)
                             .map(([subKey, subValue]) => {
@@ -763,8 +638,6 @@ function getTagColor(tagName) {
       return "#047A47"; // Green
     case "holiday":
       return "#DC2626"; // Purple
-    case "Guest Lecture":
-      return "#DC2626"; // Purple  
     case "fest":
       return "#BE185D"; // Deep Pink
     case "STC/FDP":
@@ -788,8 +661,6 @@ function getTagbgColor(tagName) {
       return "#29BE7E53"; // Green
     case "holiday":
       return "#FF5A5A57"; // Purple
-    case "Guest Lecture":
-      return "#FF5A5A57"; // Purple  
     case "fest":
       return "#EF498E59"; // Deep Pink
     case "STC/FDP":

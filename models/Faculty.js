@@ -1,9 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose=require('mongoose');
+const passport = require('passport');
 
 const Schema = new mongoose.Schema({
     department: {
         type: String,
-        enum: ['bt', 'ch', 'cy', 'ce', 'cse', 'ee', 'ece', 'hm', 'ipe', 'it', 'ice', 'ma', 'me', 'ph', 'tt', 'cf', 'cee', 'cai']
+        enum: ['bt', 'ch', 'cy', 'ce', 'cse', 'ee', 'ece', 'hm', 'ipe', 'it', 'ice', 'ma', 'me', 'ph', 'tt', 'cf','cee','cai']
     },
     name: {
         type: String
@@ -16,14 +17,6 @@ const Schema = new mongoose.Schema({
     },
     position: {
         type: String
-    },
-    guest: {
-        type: {
-            "isGuest": Boolean,
-        },
-        default: {
-            "isGuest": false
-        }
     },
     education_qualification: {
         type: [
@@ -48,80 +41,51 @@ const Schema = new mongoose.Schema({
         default: []
     },
     address: {
-        type:
-        {
-            "address1": {
-                type: String
-            },
-            "address2": {
-                type: String
-            },
-            "city": {
-                type: String
-            },
-            "state": {
-                type: String
-            },
-            "eid": {
-                type: String
-            },
-            "pin": {
-                type: String
-            },
-            "phone": {
-                type: String
-            },
-            "fax": {
-                type: String
-            },
-        }
-        ,
-        default: {
-            "address1": "",
-            "address2": "",
-            "city": "",
-            "state": "",
-            "eid": "",
-            "pin": "",
-            "phone": "",
-            "fax": ""
-        }
-    },
-    correspondence_address: {
-        type:
-        {
-            "address": {
-                type: String
-            },
-            "city": {
-                type: String
-            },
-            "state": {
-                type: String
-            },
-            "pin": {
-                type: String
-            },
-            "phone": {
-                type: String
+        type: 
+            {
+                "address1": {
+                    type: String
+                },
+                "address2": {
+                    type: String
+                },
+                "city": {
+                    type: String
+                },
+                "state": {
+                    type: String
+                },
+                "pin": {
+                    type: String
+                },
+                "eid": {
+                    type: String
+                },
+                "phone": {
+                    type: String
+                },
+                "fax": {
+                    type: String
+                },
             }
-        }
         ,
-        default: {
-            "address": "",
-            "city": "",
-            "state": "",
-            "pin": "",
-            "phone": ""
-        }
+        default: {}
     },
     gender: {
         type: String,
         enum: ['male', 'female', 'other']
     },
+    email: {
+        type: String,
+        required: true,
+    },
     password: {
         type: String,
         required: false,
+    },
+    email: {
+        type: String,
+        required: true,
     },
     dob: {
         type: String,
@@ -205,7 +169,7 @@ const Schema = new mongoose.Schema({
                 "Name": {
                     type: String
                 },
-                "Reg/Ref Number": {
+                "Reg./Ref. No.": {
                     type: String
                 },
                 "Date of Award/Filling": {
@@ -300,49 +264,19 @@ const Schema = new mongoose.Schema({
         ],
         default: []
     },
+
     research_profile: {
-        type:
-        {
-            "Research Interests": {
-                type: [String]
-            },
-            "Brief Research Profile": {
-                type: [String]
-            },
-            "Research Id": {
-                type: [
-                    {
-                        title: {
-                            type: String
-                        },
-                        link: {
-                            type: String
-                        }
-                    }
-                ]
-            }
-        },
-        default: {
-            "Research Interests": [],
-            "Brief Research Profile": [],
-            "Research Id": []
-        }
-    },
-    research_collaboration: {
-        type: [
+        type: 
             {
-                "professor": {
+                "Research Interests": {
                     type: String
                 },
-                "university": {
-                    type: String
-                },
-                "Link": {
+                "Brief Research Profile": {
                     type: String
                 }
             }
-        ],
-        default: []
+        ,
+        default: {}
     },
     research_project: {
         type: [
@@ -378,61 +312,14 @@ const Schema = new mongoose.Schema({
         ],
         default: []
     },
-    consultancy: {
-        type: [
-            {
-                "Role": {
-                    type: String
-                },
-                "Consultancy Type": {
-                    type: String
-                },
-                "Title": {
-                    type: String
-                },
-                "Funding Agency": {
-                    type: String
-                },
-                "From": {
-                    type: String
-                },
-                "To": {
-                    type: String
-                },
-                "Amount": {
-                    type: String
-                },
-                "Status": {
-                    type: String
-                },
-                "Co-investigator": {
-                    type: String
-                }
-            }
-        ],
-        default: []
-    },
     personal_link: {
-        type: {
-            "Google Scholar Link": {
-                type: String
+        type:{
+            "Google Scholar Link":{
+                type:String
             },
-            "Personal Link": {
-                type: [
-                    {
-                        title: {
-                            type: String
-                        },
-                        link: {
-                            type: String
-                        }
-                    }
-                ]
+            "Personal Link":{
+                type:String
             }
-        },
-        default: {
-            "Google Scholar Link": "",
-            "Personal Link": []
         }
     },
     journal: {
@@ -460,7 +347,7 @@ const Schema = new mongoose.Schema({
                 "Category": {
                     type: String
                 },
-                "Title": {
+                "Title" :{
                     type: String
                 },
                 "Type": {
@@ -482,22 +369,14 @@ const Schema = new mongoose.Schema({
         ],
         default: []
     },
-    createdAt: {
-        type: Date,
-    },
-    updatedAt: {
-        type: Date,
-    },
-    __v: {
-        type: Number,
+
+    sourceOfInfo: {
+        type:  String
     },
     show: { type: Boolean, default: true },
     order: {
         type: Number,
-    },
-    sourceOfInfo: {
-        type: String,
-    },
+    }
 }, { timestamps: true })
 
-module.exports = mongoose.model("faculty_test", Schema);
+module.exports = mongoose.model("Faculty", Schema);

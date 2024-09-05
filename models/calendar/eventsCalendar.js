@@ -28,7 +28,7 @@ const eventSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ['academic', 'club', 'sports', 'placement','STC/FDP', 'Guest Lecture', 'holiday','conference','fest'],
+        enum: ['academic', 'club', 'sports', 'placement','STC/FDP','holiday','conference','fest'],
         required: true
     },
     type: {
@@ -43,14 +43,6 @@ const eventSchema = new mongoose.Schema({
     meetlink: {
         type: String,
         match: /^https?:\/\/.+$/,
-    },
-    regLink: {
-        type: String,
-        match: /^https?:\/\/.+$/, 
-    },
-    pdfLink: {
-        type: String,
-        match: /^https?:\/\/.+$/, 
     },
     description: {
         type: String,
@@ -92,8 +84,7 @@ const eventSchema = new mongoose.Schema({
     },
     regReq: {
         type: Boolean,
-        default: false,
-        required: true
+        default: false
     },
     onSpotReg: {
         type: Boolean,

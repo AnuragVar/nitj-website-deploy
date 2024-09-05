@@ -4,7 +4,6 @@ const resetController = require('../controllers/resetPassword');
 const latestNewsController = require("../controllers/deptNews");
 const programmeInfoController = require("../controllers/deptProgrammeInfo");
 const DeptCalendar = require('../controllers/deptCalendar');
-const UploadController = require("../controllers/upload");
 
 const {
   getByDeptAchievement,
@@ -31,7 +30,6 @@ const {
   updateFaculty,
   deleteFaculty,
   getByDeptFaculty,
-  updateFacultyPeronalDetails,
 } = require("../controllers/faculty");
 const {
   getByDeptHOD,
@@ -91,7 +89,6 @@ const { getByDeptCoordinator } = require("../controllers/deptCoordinator");
 const { getByDeptDeptImages } = require("../controllers/deptImages");
 const { getByDeptContactUs } = require("../controllers/deptContactUs");
 const { getByDeptDescription } = require("../controllers/deptDescription");
-const { singleFileMiddleware } = require("../utils/uploadMulter");
 
 const Router = express.Router();
 
@@ -107,8 +104,6 @@ Router.get("/:dept/Acadcord", getByDeptCoordinator);
 
 Router.get("/:dept/Faculty", getByDeptFaculty);
 Router.put("/:dept/Faculty/:id/:token", authController.signInAuthentication,updateFaculty);
-Router.put("/:dept/Faculty/:id/:token/personalDetails", authController.signInAuthentication,updateFacultyPeronalDetails);
-Router.post("/:dept/upload/:token",authController.signInAuthentication, singleFileMiddleware, UploadController.upload);
 Router.get("/:dept/Faculty/:id/:token",authController.signInAuthentication,getByIdFaculty);
 Router.get("/:dept/Faculty/:id",getByIdFaculty);
 // Router.post("/:dept/Faculty", addFaculty);

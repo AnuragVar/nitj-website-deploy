@@ -22,21 +22,11 @@ const getByIdFaculty = async (req, res) => {
 
 const getByDeptFaculty = async (req, res) => {
     try {
-        const doc = await DeptWiseFaculty.findOne({ department: req.params.dept }).lean();
-        const result = await DeptWiseFaculty.findOne({ department: req.params.dept }).populate('faculty.ID', 'name address img position education_qualification address gender email dob father_name designation nationality book_publications conference_publications admin_responsibility patent phd_dissertion phd_supervised awards affiliations research_profile research_project personal_link journal event sourceOfInfo show').lean();
-        
-        const finalResult = {...doc, ...result};
-        
-        let facultyMappedWithTrue = finalResult['faculty'].filter((fcl) => {
-            return fcl['ID']['show'];
-        });
+        const result = await DeptWiseFaculty.find({ department: req.params.dept }).populate('faculty.ID', 'name address img position education_qualification address gender email dob father_name designation nationality book_publications conference_publications admin_responsibility patent phd_dissertion phd_supervised awards affiliations research_profile research_project personal_link journal event sourceOfInfo show');
 
-        // console.log(facultyMappedWithTrue);
-        // facultyMappedWithTrue = facultyMappedWithTrue.map((f) => {
-        //     let fc = faculty.find((ele) => ele.ID.toString()===f.ID._id.toString())
-        //     f['designation'] = fc['position']
-        //     return f
-        // })
+        const facultyMappedWithTrue = result[0]['faculty'].filter((faculty) => {
+            return faculty['ID']['show'];
+        });
 
         res.status(200).json(facultyMappedWithTrue);
     } catch (error) {
@@ -80,30 +70,4 @@ const updateFaculty = async (req, res) => {
     }
 }
 
-const updateFacultyPeronalDetails = async (req, res) => {
-    try {
-        if(req.user.login && req.user.isFaculty){
-            let query = {};
-            const {img,correspondence_address,education_qualification} = req.body
-            if(img){
-                query['img'] = img
-            }
-            if(correspondence_address){
-                query['correspondence_address'] = correspondence_address
-            }
-            if(education_qualification){
-                query['education_qualification'] = education_qualification
-            }
-            const result = await Faculty.findById(req.params.id);
-            await result.update({$set:query});
-            return res.status(200).json("Faculty updated succesfully")
-        }
-        return res.status(401).json("Faculty not Updated");
-    } catch (error) {
-        console.log(error);
-        res.status(400).json("Error: " + error);
-
-    }
-}
-
-module.exports = { getAllFaculty, getByDeptFaculty, getByIdFaculty, updateFaculty, deleteFaculty, addFaculty, updateFacultyPeronalDetails }
+module.exports = { getAllFaculty, getByDeptFaculty, getByIdFaculty, updateFaculty, deleteFaculty, addFaculty }
