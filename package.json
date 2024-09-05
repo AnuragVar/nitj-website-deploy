@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "tailwind build -i public/css/src/style.css -o public/style.css --minify && nodemon server.js",
+    "dev": "tailwind build -i public/css/src/style.css -o public/style.css --minify ; nodemon server.js",
     "deploy": "yarn && tailwind build -i public/css/src/style.css -o public/style.css --minify",
     "watch:css": "tailwindcss -i public/css/src/style.css -o public/style.css --watch",
     "build:css": "tailwindcss -i public/css/src/style.css -o public/style.css --minify"
@@ -39,6 +39,7 @@
     "express-formidable": "^1.2.0",
     "express-parser": "^1.0.0",
     "express-session": "^1.17.3",
+    "form-data": "^4.0.0",
     "jsonwebtoken": "^9.0.0",
     "moment-timezone": "^0.5.45",
     "mongo-store": "^0.0.2",

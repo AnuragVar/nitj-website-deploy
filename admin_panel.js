@@ -110,10 +110,10 @@ function removefields(arr) {
   if (index > -1) {
     arr.splice(index, 1);
   }
-  var index = arr.indexOf("__v");
-  if (index > -1) {
-    arr.splice(index, 1);
-  }
+  // var index = arr.indexOf("__v");
+  // if (index > -1) {
+  //   arr.splice(index, 1);
+  // }
   var index = arr.indexOf("_id");
   if (index > -1) {
     arr.splice(index, 1);
@@ -183,10 +183,10 @@ const removefieldsAdmin = (arr) => {
   if (index > -1) {
     arr.splice(index, 1);
   }
-  var index = arr.indexOf("__v");
-  if (index > -1) {
-    arr.splice(index, 1);
-  }
+  // var index = arr.indexOf("__v");
+  // if (index > -1) {
+  //   arr.splice(index, 1);
+  // }
   var index = arr.indexOf("_id");
   if (index > -1) {
     arr.splice(index, 1);
@@ -316,6 +316,7 @@ const AdminBroOptions = {
   rootPath: "/api/dashboard",
   loginPath: "/api/dashboard/login",
   logoutPath: "/api/dashboard/logout",
+  timezone: 'Asia/Kolkata',
   resources: [
     ////// Assessable By Department HOD /////
     {
@@ -2385,6 +2386,7 @@ const AdminBroOptions = {
                   "dob",
                   "designation",
                   "nationality",
+                  "guest",
                   "book_publications",
                   "conference_publications",
                   "admin_responsibility",
@@ -2393,16 +2395,15 @@ const AdminBroOptions = {
                   "phd_dissertion",
                   "awards",
                   "research_profile",
+                  "research_collaboration",
                   "research_project",
                   "personal_link",
                   "journal",
                   "event",
-                  "sourceOfInfo",
                   "show",
                   "affiliations",
                   "createdAt",
                   "updatedAt",
-                  "__v",
                 ];
               }
               return [
@@ -2415,6 +2416,7 @@ const AdminBroOptions = {
                 "dob",
                 "designation",
                 "nationality",
+                "guest",
                 "book_publications",
                 "conference_publications",
                 "admin_responsibility",
@@ -2424,10 +2426,10 @@ const AdminBroOptions = {
                 "awards",
                 "research_profile",
                 "research_project",
+                "research_collaboration",
                 "personal_link",
                 "journal",
                 "event",
-                "sourceOfInfo",
                 "show",
                 "affiliations",
               ];
@@ -2461,6 +2463,7 @@ const AdminBroOptions = {
                   "dob",
                   "designation",
                   "nationality",
+                  "guest",
                   "book_publications",
                   "conference_publications",
                   "admin_responsibility",
@@ -2470,15 +2473,14 @@ const AdminBroOptions = {
                   "awards",
                   "research_profile",
                   "research_project",
+                  "research_collaboration",
                   "personal_link",
                   "journal",
                   "event",
-                  "sourceOfInfo",
                   "show",
                   "affiliations",
                   "createdAt",
                   "updatedAt",
-                  "__v",
                 ];
               }
               return [
@@ -2500,6 +2502,7 @@ const AdminBroOptions = {
                 "awards",
                 "research_profile",
                 "research_project",
+                "research_collaboration",
                 "personal_link",
                 "journal",
                 "event",
@@ -2522,6 +2525,7 @@ const AdminBroOptions = {
                   "gender",
                   "dob",
                   "designation",
+                  "guest",
                   "nationality",
                   "book_publications",
                   "conference_publications",
@@ -2532,15 +2536,14 @@ const AdminBroOptions = {
                   "awards",
                   "research_profile",
                   "research_project",
+                  "research_collaboration",
                   "personal_link",
                   "journal",
                   "event",
-                  "sourceOfInfo",
                   "show",
                   "affiliations",
                   "createdAt",
                   "updatedAt",
-                  "__v",
                 ];
               }
               return [
@@ -2562,6 +2565,7 @@ const AdminBroOptions = {
                 "awards",
                 "research_profile",
                 "research_project",
+                "research_collaboration",
                 "personal_link",
                 "journal",
                 "event",
@@ -2585,6 +2589,7 @@ const AdminBroOptions = {
                   "dob",
                   "designation",
                   "nationality",
+                  "guest",
                   "book_publications",
                   "conference_publications",
                   "admin_responsibility",
@@ -2594,15 +2599,14 @@ const AdminBroOptions = {
                   "awards",
                   "research_profile",
                   "research_project",
+                  "research_collaboration",
                   "personal_link",
                   "journal",
                   "event",
-                  "sourceOfInfo",
                   "show",
                   "affiliations",
                   "createdAt",
                   "updatedAt",
-                  "__v",
                 ];
               }
               return [
@@ -2625,6 +2629,7 @@ const AdminBroOptions = {
                 "awards",
                 "research_profile",
                 "research_project",
+                "research_collaboration",
                 "personal_link",
                 "journal",
                 "event",
@@ -2648,6 +2653,7 @@ const AdminBroOptions = {
                   "dob",
                   "designation",
                   "nationality",
+                  "guest",
                   "book_publications",
                   "conference_publications",
                   "admin_responsibility",
@@ -2657,15 +2663,14 @@ const AdminBroOptions = {
                   "awards",
                   "research_profile",
                   "research_project",
+                  "research_collaboration",
                   "personal_link",
                   "journal",
                   "event",
-                  "sourceOfInfo",
                   "show",
                   "affiliations",
                   "createdAt",
                   "updatedAt",
-                  "__v",
                 ];
               }
               return [
@@ -2686,6 +2691,7 @@ const AdminBroOptions = {
                 "phd_dissertion",
                 "awards",
                 "research_profile",
+                "research_collaboration",
                 "research_project",
                 "personal_link",
                 "journal",
@@ -2710,6 +2716,7 @@ const AdminBroOptions = {
                   "dob",
                   "designation",
                   "nationality",
+                  "guest",
                   "book_publications",
                   "conference_publications",
                   "admin_responsibility",
@@ -2718,16 +2725,15 @@ const AdminBroOptions = {
                   "phd_dissertion",
                   "awards",
                   "research_profile",
+                  "research_collaboration",
                   "research_project",
                   "personal_link",
                   "journal",
                   "event",
-                  "sourceOfInfo",
                   "show",
                   "affiliations",
                   "createdAt",
                   "updatedAt",
-                  "__v",
                 ];
               }
               return [
@@ -2740,7 +2746,6 @@ const AdminBroOptions = {
                 "designation",
                 "nationality",
                 "education_qualification",
-                ,
                 "book_publications",
                 "conference_publications",
                 "admin_responsibility",
@@ -2749,6 +2754,7 @@ const AdminBroOptions = {
                 "phd_dissertion",
                 "awards",
                 "research_profile",
+                "research_collaboration",
                 "research_project",
                 "personal_link",
                 "journal",

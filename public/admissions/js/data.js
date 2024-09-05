@@ -7,7 +7,7 @@ fetch(`${data_url}` + "/admissions/updates/get?visible=visible&degree=BTECH")
       const ugupdate = document.createElement("li");
       ugupdate.innerHTML = `
     <div class="flex">
-      <span class="bg-[#0369A1]">|</span>
+      <span class="bg-[#0369A1] ml-[2%]">|</span>
       <div class="w-[80%] mx-2">
         <a
         href='${update.link}'
@@ -48,7 +48,7 @@ fetch(
       const mtechupdate = document.createElement("li");
       mtechupdate.innerHTML = `
       <div class="flex">
-        <span class="bg-[#0369A1]">|</span>
+        <span class="bg-[#0369A1] ml-[2%]">|</span>
         <div class="w-[80%] mx-2">
           <a
           href='${update.link}'
@@ -92,7 +92,7 @@ fetch(
       const mtechselfupdate = document.createElement("li");
       mtechselfupdate.innerHTML = `
         <div class="flex">
-          <span class="bg-[#0369A1]">|</span>
+          <span class="bg-[#0369A1] ml-[2%]">|</span>
           <div class="w-[80%] mx-2">
             <a
             href='${update.link}'
@@ -134,7 +134,7 @@ fetch(`${data_url}` + "/admissions/updates/get?visible=visible&degree=MSC")
       const mscupdate = document.createElement("li");
       mscupdate.innerHTML = `
           <div class="flex">
-          <span class="bg-[#0369A1]">|</span>
+          <span class="bg-[#0369A1] ml-[2%]">|</span>
           <div class="w-[80%] mx-2">
             <a
              href='${update.link}'
@@ -176,7 +176,7 @@ fetch(`${data_url}` + "/admissions/updates/get?visible=visible&degree=MBA")
       const mbaupdate = document.createElement("li");
       mbaupdate.innerHTML = `
             <div class="flex">
-            <span class="bg-[#0369A1]">|</span>
+            <span class="bg-[#0369A1] ml-[2%]">|</span>
             <div class="w-[80%] mx-2">
               <a
                href='${update.link}'
@@ -217,7 +217,7 @@ fetch(`${data_url}` + "/admissions/updates/get?visible=visible&degree=PHD")
       const phdupdate = document.createElement("li");
       phdupdate.innerHTML = `
               <div class="flex">
-              <span class="bg-[#0369A1]">|</span>
+              <span class="bg-[#0369A1] ml-[2%]">|</span>
               <div class="w-[80%] mx-2">
                 <a
                  href='${update.link}'
@@ -249,6 +249,50 @@ fetch(`${data_url}` + "/admissions/updates/get?visible=visible&degree=PHD")
       phd_updates.appendChild(phdupdate);
     });
   });
+
+// bscbed
+  fetch(`${data_url}` + "/admissions/updates/get?visible=visible&degree=BSC-BED")
+  .then((response) => response.json())
+  .then((data) => {
+    const bscbed_updates = document.getElementById("bscbed-updates");
+    console.log(bscbed_updates)
+    data.forEach((update) => {
+      const bscbedupdate = document.createElement("li");
+      bscbedupdate.innerHTML = `
+              <div class="flex">
+              <span class="bg-[#0369A1] ml-[2%]">|</span>
+              <div class="w-[80%] mx-2">
+                <a
+                 href='${update.link}'
+                  class="hover:text-orange-600 inline"
+                >
+                ${update.title}
+                </a>
+                </div>
+                ${update.new
+          ? ` 
+                   
+          <div>
+          <span id="new-tag" class="flex text-base text-accent-orange space-x-2">
+                      <span class="text-base material-symbols-outlined text-accent-orange">
+                        auto_awesome
+                      </span>
+                      <p class="font-bold uppercase text-accent-orange">
+                        New
+                      </p>
+                    </span>
+          </div>`
+          : `
+                      <div>
+                    </div>`
+        }
+              </div>
+            
+                `;
+      bscbed_updates.appendChild(bscbedupdate);
+    });
+  });
+
 
 // important links
 fetch(`${data_url}` + "/admissions/links/get?visible=visible&degree=BTECH")
